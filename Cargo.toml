@@ -1,0 +1,10 @@
+[package]
+name = "packed_struct"
+version = "0.1.0"
+authors = ["Terrence Cole <terrence.d.cole@gmail.com>"]
+description = "Makes working with repr(packed) structs easier."
+repository = "https://github.com/terrence2/packed_struct"
+readme = "README.md"
+
+[dependencies]
+failure = "0.1.2"
