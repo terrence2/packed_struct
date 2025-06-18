@@ -1,15 +1,31 @@
+[workspace]
+members = ["injector"]
+
+[workspace.package]
+version = "0.2.0"
+edition = "2024"
+
+[workspace.dependencies]
+proc-macro2 = "1.0"
+quote = "1.0"
+syn = { version = "= 1.0.92", features = ["default", "extra-traits", "full", "visit"] }
+
 [package]
 name = "packed_struct"
-version = "0.1.0"
+description = "An ergonomic helper for using #[repr(C, packed)] structs."
+version.workspace = true
+edition.workspace = true
 authors = ["Terrence Cole <terrence.d.cole@gmail.com>"]
-description = "Makes working with repr(packed) structs easier."
-repository = "https://github.com/terrence2/packed_struct"
+readme = "README.md"
 homepage = "https://github.com/terrence2/packed_struct"
 documentation = "https://github.com/terrence2/packed_struct"
-readme = "README.md"
-license = "GPLv3"
+repository = "https://github.com/terrence2/packed_struct"
+license = "MIT"
 keywords = ["packed"]
 categories = ["development-tools::ffi", "rust-patterns"]
 
 [dependencies]
-failure = "0.1.2"
+anyhow = "1.0"
+zerocopy = { version = "^ 0.8", features = ["derive"] }
+# Internal
+injector = { path = "injector" }
