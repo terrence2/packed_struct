@@ -1,5 +1,6 @@
 # Packed Struct
-**A macro to make it easier to use `#[repr(packed)]` structs in Rust.**
+---
+A helper proc macro to make `#[repr(C, packed)]` ergonomic.
 
 ## Motivation
 Many network and file serialization formats specify a strict layout in
@@ -22,29 +23,52 @@ rules around access to members of packed structs that disable most any access
 other than copies out of that memory.
 
 This is easy to work around: we just need to add an accessor for all members
-of a packed struct. That's a ton of boilerplate though; hence this macro.
+of a packed struct. That's a ton of boilerplate though; hence this crate.
 
 ## Example
 
 ```rust
-// Each field in the struct contains three required fields: the actual member
-// name, the accessor name, and the member type. If the accessor should return a
-// different type, you can express the type as `physical_type as return_type`.
-packed_struct!(COFFHeader {
-    _0 => machine: u16,
-    _1 => number_of_sections: u16,
-    _2 => time_date_stamp: u32,
-    _3 => pointer_to_symbol_table: u32,
-    _4 => number_of_symbols: u32,
-    _5 => size_of_optional_header: u16 as usize,
-    _6 => characteristics: u16
-});
+fn test_packed_struct() {
+    #[packed_struct]
+    #[derive(Copy, Clone)]
+    struct TestStructDerive {
+        a: u8,
+        b: u32,
+        c: u16,
+    }
 
-extern crate failure;
-use failure::Error;
+    // Direct initialization
+    let ts = TestStructDerive {
+        a: 42,
+        b: 1,
+        c: 256,
+    };
 
-fn optional_header_size(data: &[u8]) -> Result<usize, Error> {
-    let coff = COFFHeader::overlay(data)?;
-    return Ok(coff.size_of_optional_header());
+    // Expected size and alignment
+    assert_eq!(size_of::<TestStructDerive>(), 7);
+    assert_eq!(align_of::<TestStructDerive>(), 1);
+
+    // Access members without warning.
+    assert_eq!(ts.a(), 42u8);
+    assert_eq!(ts.b(), 1u32);
+    assert_eq!(ts.c(), 256u16);
+
+    // Overlay items, slices, and prefix on a bytes buffer.
+    let buf: &[u8] = &[42, 1, 0, 0, 0, 0, 1, 42, 2, 0, 0, 0, 0, 2];
+    let ts1 = TestStructDerive::overlay(buf)?;
+    let ts2 = TestStructDerive::overlay_prefix(buf)?;
+    let ts3 = TestStructDerive::overlay_slice(buf5)?;
+    assert_eq!(ts2.a(), 42u8);
+    assert_eq!(ts2.b(), 1u32);
+    assert_eq!(ts2.c(), 256u16);
+    assert_eq!(ts3[1].a(), 42u8);
+    assert_eq!(ts3[1].b(), 2u32);
+    assert_eq!(ts3[1].c(), 512u16);
 }
 ```
+
+## Changes from 0.0.1 -> 0.2.0
+* Relicensed as MIT
+* Moved from a normal macro to a proc macro
+* No longer need to add a dummy name to each field
+* Now implements zerocopy and adds overlay methods
