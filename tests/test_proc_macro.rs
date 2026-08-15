@@ -1,5 +1,5 @@
 use anyhow::Result;
-use packed_struct::packed_struct;
+use nitrogen_packed_struct::packed_struct;
 use std::mem::{align_of, size_of};
 use zerocopy::IntoBytes;
 
@@ -10,6 +10,10 @@ struct TestStructDerive {
     b: u32,
     c: u16,
 }
+
+#[packed_struct]
+#[derive(Copy, Clone)]
+struct TestStructEmpty {}
 
 #[test]
 fn it_can_derive() -> Result<()> {

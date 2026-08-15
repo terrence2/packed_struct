@@ -8,10 +8,10 @@ edition = "2024"
 [workspace.dependencies]
 proc-macro2 = "1.0"
 quote = "1.0"
-syn = { version = "= 1.0.92", features = ["default", "extra-traits", "full", "visit"] }
+syn = { version = "= 2.0.119", features = ["default", "extra-traits", "full", "visit"] }
 
 [package]
-name = "packed_struct"
+name = "nitrogen_packed_struct"
 description = "An ergonomic helper for using #[repr(C, packed)] structs."
 version.workspace = true
 edition.workspace = true
@@ -26,6 +26,6 @@ categories = ["development-tools::ffi", "rust-patterns"]
 
 [dependencies]
 anyhow = "1.0"
-zerocopy = { version = "^ 0.8", features = ["derive"] }
+zerocopy = { version = "0.8", features = ["derive"] }
 # Internal
 injector = { path = "injector" }

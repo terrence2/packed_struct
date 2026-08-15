@@ -68,31 +68,31 @@ pub(crate) fn codegen(model: ResourceModel) -> TokenStream {
     let (_impl_generics, ty_generics, where_clause) = model.generics.split_for_impl();
     proc_macro::TokenStream::from(quote! {
         #[repr(C, packed)]
-        #[derive(::packed_struct::zerocopy::FromBytes, ::packed_struct::zerocopy::IntoBytes, ::packed_struct::zerocopy::KnownLayout, ::packed_struct::zerocopy::Immutable)]
+        #[derive(::nitrogen_packed_struct::zerocopy::FromBytes, ::nitrogen_packed_struct::zerocopy::IntoBytes, ::nitrogen_packed_struct::zerocopy::KnownLayout, ::nitrogen_packed_struct::zerocopy::Immutable)]
         #ast
 
         impl #ident #ty_generics #where_clause {
             #(#methods)*
 
             #[allow(unused)]
-            pub fn overlay(buf: &[u8]) -> ::packed_struct::anyhow::Result<&#ident> {
-                ::packed_struct::zerocopy::Ref::<&[u8], #ident>::from_bytes(buf)
-                    .map(|v| ::packed_struct::zerocopy::Ref::into_ref(v))
-                    .map_err(|e| ::packed_struct::anyhow::anyhow!(format!("cannot overlay: {e}")))
+            pub fn overlay(buf: &[u8]) -> ::nitrogen_packed_struct::anyhow::Result<&#ident> {
+                ::nitrogen_packed_struct::zerocopy::Ref::<&[u8], #ident>::from_bytes(buf)
+                    .map(|v| ::nitrogen_packed_struct::zerocopy::Ref::into_ref(v))
+                    .map_err(|e| ::nitrogen_packed_struct::anyhow::anyhow!(format!("cannot overlay: {e}")))
             }
 
             #[allow(unused)]
-            pub fn overlay_prefix(buf: &[u8]) -> ::packed_struct::anyhow::Result<&#ident> {
-                ::packed_struct::zerocopy::Ref::<&[u8], #ident>::from_bytes(&buf[0..::std::mem::size_of::<#ident>()])
-                    .map(|v| ::packed_struct::zerocopy::Ref::into_ref(v))
-                    .map_err(|e| ::packed_struct::anyhow::anyhow!(format!("cannot overlay: {e}")))
+            pub fn overlay_prefix(buf: &[u8]) -> ::nitrogen_packed_struct::anyhow::Result<&#ident> {
+                ::nitrogen_packed_struct::zerocopy::Ref::<&[u8], #ident>::from_bytes(&buf[0..::std::mem::size_of::<#ident>()])
+                    .map(|v| ::nitrogen_packed_struct::zerocopy::Ref::into_ref(v))
+                    .map_err(|e| ::nitrogen_packed_struct::anyhow::anyhow!(format!("cannot overlay: {e}")))
             }
 
             #[allow(unused)]
-            pub fn overlay_slice(buf: &[u8]) -> ::packed_struct::anyhow::Result<&[#ident]> {
-                ::packed_struct::zerocopy::Ref::<&[u8], [#ident]>::from_bytes(buf)
-                    .map(|v| ::packed_struct::zerocopy::Ref::into_ref(v))
-                    .map_err(|e| ::packed_struct::anyhow::anyhow!(format!("cannot overlay: {e}")))
+            pub fn overlay_slice(buf: &[u8]) -> ::nitrogen_packed_struct::anyhow::Result<&[#ident]> {
+                ::nitrogen_packed_struct::zerocopy::Ref::<&[u8], [#ident]>::from_bytes(buf)
+                    .map(|v| ::nitrogen_packed_struct::zerocopy::Ref::into_ref(v))
+                    .map_err(|e| ::nitrogen_packed_struct::anyhow::anyhow!(format!("cannot overlay: {e}")))
             }
 
             #[allow(unused)]
