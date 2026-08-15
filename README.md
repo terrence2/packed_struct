@@ -1,3 +1,9 @@
+[![CI](https://codeberg.org/terrence/packed_struct/badges/workflows/qa.yaml/badge.svg)](https://codeberg.org/terrence/packed_struct/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://codeberg.org/terrence/packed_struct#LICENSE)
+[![Crates.io](https://img.shields.io/crates/v/nitrogen_packed_struct.svg)](https://crates.io/crates/nitrogen_packed_struct)
+[![Downloads](https://img.shields.io/crates/d/nitrogen_packed_struct.svg)](https://crates.io/crates/nitrogen_packed_struct)
+[![Docs](https://docs.rs/nitrogen_packed_struct/badge.svg)](https://docs.rs/packed_struct/latest/nitrogen_packed_struct/)
+
 # Packed Struct
 ---
 A helper proc macro to make `#[repr(C, packed)]` ergonomic.
